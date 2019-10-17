@@ -1,15 +1,16 @@
 package com.example.demo.controllers;
 
+import com.example.demo.beans.Job;
 import com.example.demo.beans.User;
+import com.example.demo.repositories.JobRepository;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -17,50 +18,50 @@ import java.security.Principal;
 
 @Controller
 public class HomeController {
+    @Autowired
+    JobRepository jobRepository;
 
-  private UserService userService;
-
-  @RequestMapping("/")
-  public String index(){
-    return "index";
-  }
-
-  @RequestMapping("/login")
-  public String login(){
-    return "login";
-  }
-
-  @RequestMapping(value = "/register", method = RequestMethod.GET)
-  public String showRegistrationPage(Model model) {
-    model.addAttribute("user", new User());
-    return "registration";
-  }
-
-  @RequestMapping(value="/register", method=RequestMethod.POST)
-  public String processRegistrationPage(@Valid @ModelAttribute("user")
-                                                User user, BindingResult
-                                                result,
-                                        Model model) {
-    model.addAttribute("user", new User());
-    if (result.hasErrors()) {
-      return "registration";
+    @RequestMapping("/")
+    public String listJobs(Model model){
+        model.addAttribute("jobs", jobRepository.findAll());
+        return "index";
     }
-    else {
-      userService.saveUser(user);
-      model.addAttribute("message", "User Account Successfully Created");
+
+    @GetMapping("/add")
+    public String jobForm(Model model){
+        model.addAttribute("job", new Job());
+        return "jobform";
     }
-    return "index";
-  }
 
-  @RequestMapping("/secure")
-  public String secure(HttpServletRequest request, Authentication
-          authentication, Principal principal){
-    Boolean isAdmin =  request.isUserInRole("ADMIN");
-    Boolean isUser =  request.isUserInRole("USER");
-    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-    String username = principal.getName();
-    return "secure";
-  }
+    // process Search Bar form
+    @PostMapping("/processsearch")
+    public String searchResult(Model model, @RequestParam(name="search") String search){
+        model.addAttribute("jobs", jobRepository.findByTitleContainingIgnoreCase(search));
+        return "searchlist";
+    }
 
+    @PostMapping("/process")
+    public String processForm(@ModelAttribute Job job){
+        jobRepository.save(job);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/detail/{id}")
+    public String showJob(@PathVariable("id") long id, Model model){
+        model.addAttribute("job", jobRepository.findById(id).get());
+        return "show";
+    }
+
+    @RequestMapping("/update/{id}")
+    public String updateJob(@PathVariable("id") long id, Model model){
+        model.addAttribute("job", jobRepository.findById(id).get());
+        return "jobform";
+    }
+
+    @RequestMapping("delete/{id}")
+    public String delJob(@PathVariable("id") long id){
+        jobRepository.deleteById(id);
+        return "redirect:/";
+    }
 
 }
