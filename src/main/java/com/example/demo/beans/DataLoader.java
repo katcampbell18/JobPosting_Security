@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 @Component
@@ -62,9 +64,16 @@ public class DataLoader implements CommandLineRunner {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setRoles(Arrays.asList(userRole, adminRole));
     userRepository.save(user);
-  }
 
-//  Job job = new Job("Landscaper", "Cut grass, tree trimming, and light hauling", LocalDateTime.of(2019,10,
-//          16,09,30),"Jim Jimmerson","703-555-3562");
-//  jobRepository.save(job);
+    Job job;
+    job = new Job("Landscaper", "Cut grass, tree trimming, and light hauling",
+            LocalDateTime.of(2019, Month.OCTOBER,3,10,15,30),
+            "Jim Jimmerson", "703-555-3562");
+    jobRepository.save(job);
+
+    job = new Job("Nanny", "Part-time helper to aid with children going to anf from school.  Help with homework and provide snack in afternoon. Good driving record. References required.",
+            LocalDateTime.of(2019, Month.SEPTEMBER,23,15,03,58),
+            "Rebecca Smith", "443-555-9840");
+    jobRepository.save(job);
+  }
 }

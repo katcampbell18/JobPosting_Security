@@ -13,7 +13,7 @@
 <div th:insert="base :: navbar"></div>
 <div class="container">
     <h1 style="text-align: center;">Job Listings</h1>
-    <div sec:authorize="isAuthenticated()">
+<!--    <div >-->
         <table class="table table-striped table-dark">
             <thead>
             <tr>
@@ -31,7 +31,7 @@
                 <td th:text="${job.description}"></td>
                 <td th:text="${job.author}"></td>
                 <td th:text="${job.phone}"></td>
-                <td>
+                <td sec:authorize="isAuthenticated()">
                     <a th:href="@{/detail/{id}(id=${job.id})}">Details</a>
                 </td>
             </tr>

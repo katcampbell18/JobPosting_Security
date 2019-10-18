@@ -33,13 +33,12 @@ public class Job {
         posteddate = LocalDateTime.now();
     }
 
-    public Job(String title, String description, LocalDateTime posteddate, String author, String phone, User user) {
+    public Job(String title, String description, LocalDateTime posteddate, String author, String phone) {
         this.title = title;
         this.description = description;
         this.posteddate = posteddate;
         this.author = author;
         this.phone = phone;
-        this.user = user;
     }
 
     public long getId() {
