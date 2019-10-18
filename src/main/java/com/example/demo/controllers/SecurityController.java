@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.beans.User;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,9 @@ import java.security.Principal;
 
 @Controller
 public class SecurityController {
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     UserService userService;
@@ -58,9 +62,10 @@ public class SecurityController {
         else {
             user.setPassword(userService.encode(user.getPassword()));
             userService.saveUser(user);
+//            System.out.println("this works");
             model.addAttribute("message", "User Account Successfully Created");
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @RequestMapping("/secure")

@@ -71,7 +71,7 @@ public class DataLoader implements CommandLineRunner {
             "Jim Jimmerson", "703-555-3562");
     jobRepository.save(job);
 
-    job = new Job("Nanny", "Part-time helper to aid with children going to anf from school.  Help with homework and provide snack in afternoon. Good driving record. References required.",
+    job = new Job("Nanny", "Part-time helper to aid with children going to and from school.  Help with homework and provide snack in afternoon. Good driving record. References required.",
             LocalDateTime.of(2019, Month.SEPTEMBER,23,15,03,58),
             "Rebecca Smith", "443-555-9840");
     jobRepository.save(job);

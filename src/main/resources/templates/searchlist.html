@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,31 +11,32 @@
 </head>
 <body>
 <div th:insert="base :: navbar"></div>
-<h1 style="text-align: center;">Job Posting Form</h1>
+
 <div class="container">
-    <form action="#" th:action="@{/process}" th:object="${job}" method="post">
-        <input type="hidden" th:field="*{id}" />
-        <input type="hidden" th:field="*{posteddate}" />
-        <div class="form-group">
-            <label for="Inputtitle">Title</label>
-            <input type="text" class="form-control" th:field="*{title}">
-        </div>
-        <div class="form-group">
-            <label for="Inputdesc">Description</label>
-            <textarea class="form-control" rows="4" cols="50" th:field="*{description}">
-            </textarea>
-        </div>
-        <div class="form-group">
-            <label for="Inputauthor">Author</label>
-            <input type="text" class="form-control" th:field="*{author}">
-        </div>
-        <div class="form-group">
-            <label for="Inputphone">Phone</label>
-            <input type="text" class="form-control" th:field="*{phone}">
-        </div>
-        &nbsp
-        <button type="submit" class="btn btn-success mb-2">Submit</button>
-    </form>
+    <h1 style="text-align: center;">Search Results</h1>
+    <table class="table table-striped table-dark">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Posted</th>
+            <th>Description</th>
+            <th>Posted By</th>
+            <th>Contact</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="job : ${jobs}">
+            <td th:text="${job.title}"></td>
+            <td th:text="${job.posteddate}"></td>
+            <td th:text="${job.description}"></td>
+            <td th:text="${job.author}"></td>
+            <td th:text="${job.phone}"></td>
+            <td>
+                <a th:href="@{/detail/{id}(id=${job.id})}">Details</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div th:insert="base :: footer"></div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

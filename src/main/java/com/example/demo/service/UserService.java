@@ -22,7 +22,7 @@ public class UserService {
   RoleRepository roleRepository;
 
   @Autowired
-  private PasswordEncoder passwordEncoder;
+  private BCryptPasswordEncoder passwordEncoder;
 
   @Autowired
   public UserService(UserRepository userRepository){
