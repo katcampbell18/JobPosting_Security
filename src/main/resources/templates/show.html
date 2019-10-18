@@ -30,14 +30,14 @@
                 <div class="card-header" style="font-weight: bold" th:text="${job.title}">
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item" >Posted Date: <span th:text="${#dates.format(job.posteddate,'yyyy-MM-dd HH:mm')}"></span></li>
+                    <li class="list-group-item" >Posted Date: <span th:text="${job.posteddate}"></span></li>
                     <li class="list-group-item" >Description: <span th:text="${job.description}"></span></li>
                     <li class="list-group-item" >Posted By: <span th:text="${job.author}"></span></li>
                     <li class="list-group-item" >Contact: <span th:text="${job.phone}"></span></li>
                 </ul>
                 <div class="card-body" th:if="${user_id == job.user.id}">
-                    <a th:href="@{/update/{id}(id=${job.id})}">Update</a> -
-                    <a th:href="@{/delete/{id}(id=${job.id})}" class="btn btn-danger">Delete this job</a>
+                    <a th:href="@{/update/{id}(id=${job.id})}" class="btn btn-warning">Update</a>
+                    <a th:href="@{/delete/{id}(id=${job.id})}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>

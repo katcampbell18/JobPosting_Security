@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.beans.Job;
 import com.example.demo.beans.User;
 import com.example.demo.repositories.JobRepository;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,12 +19,22 @@ import java.security.Principal;
 
 @Controller
 public class HomeController {
+
     @Autowired
     JobRepository jobRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
 
     @RequestMapping("/")
     public String listJobs(Model model){
         model.addAttribute("jobs", jobRepository.findAll());
+        if(userService.getUser() != null) {
+            model.addAttribute("user_id", userService.getUser().getId());
+        }
         return "index";
     }
 
@@ -42,19 +53,28 @@ public class HomeController {
 
     @PostMapping("/process")
     public String processForm(@ModelAttribute Job job){
+        job.setUser(userService.getUser());
         jobRepository.save(job);
         return "redirect:/";
     }
 
     @RequestMapping("/detail/{id}")
     public String showJob(@PathVariable("id") long id, Model model){
+        model.addAttribute("user", userService.getUser());
         model.addAttribute("job", jobRepository.findById(id).get());
+        if (userService.getUser() != null){
+            model.addAttribute("user_id", userService.getUser().getId());
+        }
         return "show";
     }
 
     @RequestMapping("/update/{id}")
     public String updateJob(@PathVariable("id") long id, Model model){
+        model.addAttribute("user", userService.getUser());
         model.addAttribute("job", jobRepository.findById(id).get());
+        if (userService.getUser() != null){
+            model.addAttribute("user_id", userService.getUser().getId());
+        }
         return "jobform";
     }
 

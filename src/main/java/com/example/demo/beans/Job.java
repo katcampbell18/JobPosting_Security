@@ -4,7 +4,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Entity
 public class Job {
@@ -12,26 +13,33 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotNull
+
     private String title;
 
-    @NotNull
     private String description;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date posteddate;
+    private LocalDateTime posteddate;
 
-    @NotNull
     private String author;
 
-    @NotNull
     private String phone;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
     public Job() {
+        posteddate = LocalDateTime.now();
+    }
+
+    public Job(String title, String description, LocalDateTime posteddate, String author, String phone, User user) {
+        this.title = title;
+        this.description = description;
+        this.posteddate = posteddate;
+        this.author = author;
+        this.phone = phone;
+        this.user = user;
     }
 
     public long getId() {
@@ -58,11 +66,11 @@ public class Job {
         this.description = description;
     }
 
-    public Date getPosteddate() {
+    public LocalDateTime getPosteddate() {
         return posteddate;
     }
 
-    public void setPosteddate(Date posteddate) {
+    public void setPosteddate(LocalDateTime posteddate) {
         this.posteddate = posteddate;
     }
 

@@ -1,5 +1,6 @@
 package com.example.demo.beans;
 
+import com.example.demo.repositories.JobRepository;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +8,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Component
 public class DataLoader implements CommandLineRunner {
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  JobRepository jobRepository;
 
   @Autowired
   RoleRepository roleRepository;
@@ -58,4 +63,8 @@ public class DataLoader implements CommandLineRunner {
     user.setRoles(Arrays.asList(userRole, adminRole));
     userRepository.save(user);
   }
+
+//  Job job = new Job("Landscaper", "Cut grass, tree trimming, and light hauling", LocalDateTime.of(2019,10,
+//          16,09,30),"Jim Jimmerson","703-555-3562");
+//  jobRepository.save(job);
 }

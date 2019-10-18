@@ -19,14 +19,21 @@ import java.security.Principal;
 public class SecurityController {
     private UserService userService;
 
-    @RequestMapping("/")
-    public String index(){
-        return "index";
+//    @RequestMapping("/")
+//    public String index(){
+//        return "index";
+//    }
+
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public String login(Model model){
+        model.addAttribute("user", new User());
+        return "login";
     }
 
-    @RequestMapping("/login")
-    public String login(){
-        return "login";
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String processLogin(@ModelAttribute("user") User user, Model model){
+        model.addAttribute("user", new User());
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
