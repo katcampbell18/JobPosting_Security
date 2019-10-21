@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -69,14 +70,33 @@ public class SecurityController {
     }
 
     @RequestMapping("/secure")
-    public String secure(HttpServletRequest request, Authentication
-            authentication, Principal principal){
-        Boolean isAdmin =  request.isUserInRole("ADMIN");
-        Boolean isUser =  request.isUserInRole("USER");
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String username = principal.getName();
-        return "secure";
+    public String getUsers(Model model){
+        model.addAttribute("users", userRepository.findAll());
+        return "roles";
     }
+
+    @RequestMapping("/updateUser/{id}")
+    public String getUser(@PathVariable("id") Long id, Model model){
+        model.addAttribute("user", userRepository.findById(id).get());
+        return "register";
+    }
+
+    @RequestMapping("/deleteUser/{id}")
+    public String delUser(@PathVariable("id") Long id, Model model){
+        userRepository.deleteById(id);
+        model.addAttribute("users", userRepository.findAll());
+        return "roles";
+    }
+
+//    @RequestMapping("/secure")
+//    public String secure(HttpServletRequest request, Authentication
+//            authentication, Principal principal){
+//        Boolean isAdmin =  request.isUserInRole("ADMIN");
+//        Boolean isUser =  request.isUserInRole("USER");
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//        String username = principal.getName();
+//        return "secure";
+//    }
 
 
 }
